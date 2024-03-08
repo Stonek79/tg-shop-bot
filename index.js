@@ -21,7 +21,7 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'Нажми кнопку "За покупками"', {
             reply_markup: {
                 keyboard: [
-                    [{text: 'За покупками!', web_app: {url: appUrl}}],
+                    [{text: 'За покупками!', web_app: {url: appUrl + '/products'}}],
                 ],
                 resize_keyboard: true
             }
@@ -64,6 +64,7 @@ app.post('/web-data', async (req, res) => {
                 message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
             }
         })
+        console.log(products, 'PRODUCTS')
         return res.status(200).json({});
     } catch (e) {
         await bot.answerWebAppQuery(queryId, {
