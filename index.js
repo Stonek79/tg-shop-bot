@@ -3,16 +3,9 @@ const cors = require('cors');
 require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api');
 
-const path = require('path')
-
-const https = require(`https`)
-const http = require('http')
-const fs = require("fs");
-
-const options = {
-    key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
-}
+const https = require('https');
+const fs = require('fs');
+const path = require("path");
 
 const token = process.env.TOKEN
 const appUrl = process.env.APPURL
@@ -91,16 +84,17 @@ app.post('/web-data', async (req, res) => {
     }
 })
 
-const PORT = 8843
-const HTTP_PORT = 8008
+const PORT = 8000;
 
-const httpsServer = https.createServer(options, app)
-const httpServer = http.createServer(app)
+app.listen(PORT, () => console.log('server started on PORT ' + PORT))
 
-httpsServer.listen(PORT, () => {
-    console.log(`server is running on ${PORT} port`)
-})
+const options = {
+    key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
+    cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+}
 
-httpServer.listen(HTTP_PORT, () => {
-    console.log(`server is running on ${HTTP_PORT} port`)
-})
+const HTTPS_PORT = 8843;
+
+https.createServer(options, app).listen(HTTPS_PORT, () => {
+    console.log(`Server is running on port ${HTTPS_PORT}`);
+});
