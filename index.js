@@ -84,17 +84,13 @@ app.post('/web-data', async (req, res) => {
     }
 })
 
-const PORT = 8000;
-
-app.listen(PORT, () => console.log('server started on PORT ' + PORT))
+const PORT = 8843;
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
     cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
-}
+};
 
-const HTTPS_PORT = 8843;
-
-https.createServer(options, app).listen(HTTPS_PORT, () => {
-    console.log(`Server is running on port ${HTTPS_PORT}`);
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
