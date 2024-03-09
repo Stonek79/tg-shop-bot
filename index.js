@@ -89,8 +89,10 @@ const PORT = 8843;
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
     cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
-};
+}
 
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const httpsServer = https.createServer(options, app)
+
+httpsServer.listen(PORT, () => {
+    console.log(`server is running on ${PORT} port`)
+})
