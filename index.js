@@ -4,6 +4,7 @@ require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api');
 
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const path = require("path");
 
@@ -62,29 +63,30 @@ app.post('/web-data', async (req, res) => {
     console.log(products, 'PRODUCTS')
 
     try {
-        await bot.answerWebAppQuery(queryId, {
-            type: 'article',
-            id: queryId,
-            title: 'Успешная покупка',
-            input_message_content: {
-                message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
-            }
-        })
-        return res.status(200).json({});
+        // await bot.answerWebAppQuery(queryId, {
+        //     type: 'article',
+        //     id: queryId,
+        //     title: 'Успешная покупка',
+        //     input_message_content: {
+        //         message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
+        //     }
+        // })
+        return res.status(200).json(products);
     } catch (e) {
-        await bot.answerWebAppQuery(queryId, {
-            type: 'article',
-            id: queryId,
-            title: 'Не удалось приобрести товар',
-            input_message_content: {
-                message_text: 'Не удалось приобрести товар'
-            }
-        })
+        // await bot.answerWebAppQuery(queryId, {
+        //     type: 'article',
+        //     id: queryId,
+        //     title: 'Не удалось приобрести товар',
+        //     input_message_content: {
+        //         message_text: 'Не удалось приобрести товар'
+        //     }
+        // })
         return res.status(500).json({})
     }
 })
 
 const PORT = 8843;
+const HTTP_PORT = 8000;
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
@@ -92,7 +94,12 @@ const options = {
 }
 
 const httpsServer = https.createServer(options, app)
+const httpServer = http.createServer(app)
 
 httpsServer.listen(PORT, () => {
-    console.log(`server is running on ${PORT} port`)
+    console.log(`HTTPS server is running on ${PORT} port`)
+})
+
+httpServer.listen(HTTP_PORT, () => {
+    console.log(`HTTP server is running on ${HTTP_PORT} port`)
 })
