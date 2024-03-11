@@ -26,36 +26,37 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'Нажми кнопку "За покупками"', {
             reply_markup: {
                 keyboard: [
-                    [{text: 'За покупками!', web_app: {url: appUrl + '/products'}}],
+                    [{text: 'За покупками!', web_app: {url: appUrl}}],
+                    // [{text: 'За покупками!', web_app: {url: appUrl + '/products'}}],
                 ],
                 resize_keyboard: true
             }
         });
 
-        await bot.sendMessage(chatId, 'Нажми кнопку "Зарегистрироваться"', {
-            reply_markup: {
-                inline_keyboard: [
-                    [{text: 'Зарегистрироваться', web_app: {url: appUrl + '/form'}}],
-                ],
-            }
-        });
+        // await bot.sendMessage(chatId, 'Нажми кнопку "Зарегистрироваться"', {
+        //     reply_markup: {
+        //         inline_keyboard: [
+        //             [{text: 'Зарегистрироваться', web_app: {url: appUrl + '/form'}}],
+        //         ],
+        //     }
+        // });
     }
 
-    if(msg?.web_app_data?.data) {
-        try {
-            const data = JSON.parse(msg?.web_app_data?.data)
-            console.log(data)
-            await bot.sendMessage(chatId, 'Спасибо за обратную связь!')
-            await bot.sendMessage(chatId, 'Ваш город: ' + data?.city);
-            await bot.sendMessage(chatId, 'Ваш адрес доставки: ' + data?.address);
-
-            setTimeout(async () => {
-                await bot.sendMessage(chatId, 'Всю информацию вы получите в этом чате');
-            }, 3000)
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // if(msg?.web_app_data?.data) {
+    //     try {
+    //         const data = JSON.parse(msg?.web_app_data?.data)
+    //         console.log(data)
+    //         await bot.sendMessage(chatId, 'Спасибо за обратную связь!')
+    //         await bot.sendMessage(chatId, 'Ваш город: ' + data?.city);
+    //         await bot.sendMessage(chatId, 'Ваш адрес доставки: ' + data?.address);
+    //
+    //         setTimeout(async () => {
+    //             await bot.sendMessage(chatId, 'Всю информацию вы получите в этом чате');
+    //         }, 3000)
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 });
 
 app.post('/web-data', async (req, res) => {
